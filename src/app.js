@@ -1,14 +1,17 @@
 var title = document.createElement("title");
 title.innerHTML = ".OBJ Renderer";
-document.getElementsByTagName("head")[0].appendChild(title);
+document.head.appendChild(title);
 
 var canvas = document.createElement("canvas"),
   ctx = canvas.getContext("2d");
-document.getElementsByTagName("body")[0].appendChild(canvas);
+document.body.appendChild(canvas);
 
 var positions = [];
 
 function draw() {
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "black";
   var step = 4;
   for (var i = 0; i < positions.length; i += step) {
     var x = positions[i];
@@ -18,6 +21,8 @@ function draw() {
     var new_y = (y * canvas.height) / (2.0 * w) + canvas.height / 2;
     ctx.fillRect(new_x, new_y, 4, 4);
   }
+  var img = new Image();
+  img.src = canvas.toDataURL("image/gif");
 }
 
 var positionCanvas = function () {
