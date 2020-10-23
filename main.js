@@ -15,34 +15,35 @@ Vert.prototype.toString = function () {
 };
 
 var ModelMatrix = [
-  [0, 0, 0, 1],
-  [0, 0, 1, 0],
-  [0, 1, 0, 0],
   [1, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 1, 0],
+  [0, 0, 0, 1],
 ];
 
 var WorldMatrix = [
-  [0, 0, 0, 1],
-  [0, 0, 1, -10],
-  [0, -1, 0, 0],
   [1, 0, 0, 0],
+  [0, -1, 0, 0],
+  [0, 0, 1, -10],
+  [0, 0, 0, 1],
 ];
 
 var far = 100;
 var near = 0.1;
-var fov = { x: 50, y: 50 };
+var ratio = { w: 16, h: 10 };
+var fovY = 50;
 var PerspectiveMatrix = [
-  [0, 0, -1, 0],
+  [Math.atan(((ratio.w / ratio.h) * fovY) / 2), 0, 0, 0],
+  [0, Math.atan(fovY / 2), 0, 0],
   [0, 0, -(far + near) / (far - near), -((2 * (near * far)) / (far - near))],
-  [0, Math.atan(fov.y / 2), 0, 1],
-  [Math.atan(fov.x / 2), 0, 0, 0],
+  [0, 0, -1, 0],
 ];
 
 var OrthographicMatrix = [
-  [0, 0, 0, 1],
+  [1 / ratio.w, 0, 0, 0],
+  [0, 1 / ratio.h, 0, 0],
   [0, 0, -(2 / (far - near)), -((far + near) / (far - near))],
-  [0, 1 / canvas.height, 0, 0],
-  [1 / canvas.width, 0, 0, 0],
+  [0, 0, 0, 1],
 ];
 
 var positions = [];
@@ -77,10 +78,10 @@ var positionCanvas = function () {
   canvas.style.borderWidth = 1 + "px";
   if (window.innerWidth < window.innerHeight) {
     canvas.width = window.innerWidth * 0.5;
-    canvas.height = (canvas.width / 26) * 20;
+    canvas.height = (canvas.width / ratio.w) * ratio.h;
   } else {
     canvas.height = window.innerHeight * 0.5;
-    canvas.width = (canvas.height / 20) * 26;
+    canvas.width = (canvas.height / ratio.h) * ratio.w;
   }
   canvas.style.left = window.innerWidth / 2 - canvas.width / 2 + "px";
   canvas.style.top = window.innerHeight / 2 - canvas.height / 2 + "px";
@@ -91,7 +92,8 @@ window.addEventListener("resize", positionCanvas, draw);
 var ViewWorldMatrix;
 var ModelViewProjMatrix;
 var loadFile = function () {
-  ViewWorldMatrix = multiplyMatrix(OrthographicMatrix, WorldMatrix);
+  ViewWorldMatrix = multiplyMatrix(PerspectiveMatrix, WorldMatrix);
+  // ViewWorldMatrix = multiplyMatrix(OrthographicMatrix, WorldMatrix);
   ModelViewProjMatrix = multiplyMatrix(ViewWorldMatrix, ModelMatrix);
   // fetch("/assets/suzanne.obj")
   fetch("/assets/cube.obj")
