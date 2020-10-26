@@ -61,8 +61,6 @@ function draw() {
 
     ctx.fillRect(new_x, new_y, 4, 4);
   }
-  // var img = new Image();
-  // img.src = canvas.toDataURL("image/gif");
 }
 
 var positionCanvas = function () {
