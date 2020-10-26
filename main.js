@@ -1,4 +1,4 @@
-import { multiplyPoint, multiplyMatrix } from "./modules/math.js";
+import * as Matrix from "./modules/matrix.js";
 
 var canvas = document.getElementById("viewport"),
   ctx = canvas.getContext("2d");
@@ -14,19 +14,12 @@ Vert.prototype.toString = function () {
   return `x: ${this.x}, y: ${this.y}, z: ${this.z}, w: ${this.w}`;
 };
 
-var ModelMatrix = [
-  [1, 0, 0, 0],
-  [0, 1, 0, 0],
-  [0, 0, 1, 0],
-  [0, 0, 0, 1],
-];
+var ModelMatrix = Matrix.IDENTITY_MATRIX;
 
-var WorldMatrix = [
-  [1, 0, 0, 0],
-  [0, -1, 0, 0],
-  [0, 0, 1, -10],
-  [0, 0, 0, 1],
-];
+var WorldMatrix = Matrix.translate(
+  Matrix.rotate(Matrix._new(), [0, 0, 1], 180),
+  [0, 0, -5]
+);
 
 var far = 100;
 var near = 0.1;
@@ -92,11 +85,11 @@ window.addEventListener("resize", positionCanvas, draw);
 var ViewWorldMatrix;
 var ModelViewProjMatrix;
 var loadFile = function () {
-  ViewWorldMatrix = multiplyMatrix(PerspectiveMatrix, WorldMatrix);
-  // ViewWorldMatrix = multiplyMatrix(OrthographicMatrix, WorldMatrix);
-  ModelViewProjMatrix = multiplyMatrix(ViewWorldMatrix, ModelMatrix);
-  // fetch("/assets/suzanne.obj")
-  fetch("/assets/cube.obj")
+  ViewWorldMatrix = Matrix.multiply_matrix(PerspectiveMatrix, WorldMatrix);
+  ViewWorldMatrix = Matrix.multiply_matrix(OrthographicMatrix, WorldMatrix);
+  ModelViewProjMatrix = Matrix.multiply_matrix(ViewWorldMatrix, ModelMatrix);
+  fetch("/assets/suzanne.obj")
+  // fetch("/assets/cube.obj")
     .then((file) => file.text())
     .then((file) => {
       var text = file.split("\n");
@@ -105,7 +98,7 @@ var loadFile = function () {
           case "v":
             var coords = line.split(" ").splice(1, 4);
             coords.push("1.0");
-            coords = multiplyPoint(ModelViewProjMatrix, coords);
+            coords = Matrix.multiply_point(ModelViewProjMatrix, coords);
             var vert = new Vert(coords[0], coords[1], coords[2], coords[3]);
             positions.push(vert);
             break;
