@@ -16,20 +16,20 @@ Vert.prototype.toString = function () {
 
 var ModelMatrix = Matrix.IDENTITY_MATRIX;
 
-var WorldMatrix = Matrix.translate(
-  Matrix.rotate(Matrix._new(), [0, 0, 1], 180),
-  [0, 0, -5]
+var WorldMatrix = Matrix.inverse(
+  Matrix.translate(Matrix.rotate(Matrix._new(), [0, 0, 1], 180), [0, 0, -10])
 );
 
 var far = 100;
 var near = 0.1;
 var ratio = { w: 16, h: 10 };
 var fovY = 50;
+
 var PerspectiveMatrix = [
   [Math.atan(((ratio.w / ratio.h) * fovY) / 2), 0, 0, 0],
   [0, Math.atan(fovY / 2), 0, 0],
   [0, 0, -(far + near) / (far - near), -((2 * (near * far)) / (far - near))],
-  [0, 0, -1, 0],
+  [0, 0, 1, 0],
 ];
 
 var OrthographicMatrix = [
@@ -86,10 +86,10 @@ var ViewWorldMatrix;
 var ModelViewProjMatrix;
 var loadFile = function () {
   ViewWorldMatrix = Matrix.multiply_matrix(PerspectiveMatrix, WorldMatrix);
-  ViewWorldMatrix = Matrix.multiply_matrix(OrthographicMatrix, WorldMatrix);
+  // ViewWorldMatrix = Matrix.multiply_matrix(OrthographicMatrix, WorldMatrix);
   ModelViewProjMatrix = Matrix.multiply_matrix(ViewWorldMatrix, ModelMatrix);
   fetch("/assets/suzanne.obj")
-  // fetch("/assets/cube.obj")
+    // fetch("/assets/cube.obj")
     .then((file) => file.text())
     .then((file) => {
       var text = file.split("\n");

@@ -85,6 +85,75 @@ describe("Math", function () {
     expect(Matrix.multiply_matrix(matrix_a, matrix_b)).toMatchObject(matrix_c);
   });
 
+  test("Transpose matrix", () => {
+    var matrix = [
+      [-4, 2, -16, 6],
+      [-1, 1, -2, 1],
+      [2, 0, 4, -2],
+      [1, -1, 4, -1],
+    ];
+    var transposed = [
+      [-4, -1, 2, 1],
+      [2, 1, 0, -1],
+      [-16, -2, 4, 4],
+      [6, 1, -2, -1],
+    ];
+    expect(Matrix.transpose(matrix)).toMatchObject(transposed);
+  });
+
+  test("Get determinant for 2x2 matrix", () => {
+    var matrix = [
+      [4, 6],
+      [3, 8],
+    ];
+    var determinant = 14;
+    expect(Matrix.get_determinant_2x2(matrix)).toBe(determinant);
+  });
+
+  test("Get determinant for 3x3 matrix", () => {
+    var matrix = [
+      [6, 1, 1],
+      [4, -2, 5],
+      [2, 8, 7],
+    ];
+    var determinant = -306;
+    expect(Matrix.get_determinant_3x3(matrix)).toBe(determinant);
+  });
+
+  test("Get determinant for 4x4 matrix", () => {
+    var matrix = [
+      [1, 0, 0, 1],
+      [0, 2, 1, 2],
+      [2, 1, 0, 1],
+      [2, 0, 1, 4],
+    ];
+    var determinant = 2;
+    expect(Matrix.get_determinant_4x4(matrix)).toBe(determinant);
+  });
+
+  test("Inverse matrix", () => {
+    var matrix = [
+      [1, 0, 0, 1],
+      [0, 2, 1, 2],
+      [2, 1, 0, 1],
+      [2, 0, 1, 4],
+    ];
+    var inverse = [
+      [-2, -0.5, 1, 0.5],
+      [1, 0.5, 0, -0.5],
+      [-8, -1, 2, 2],
+      [3, 0.5, -1, -0.5],
+    ];
+
+    expect(Matrix.inverse(matrix)).toMatchObject(inverse);
+    expect(
+      Matrix.multiply_matrix(matrix, Matrix.inverse(matrix))
+    ).toMatchObject(Matrix.IDENTITY_MATRIX);
+    expect(
+      Matrix.multiply_matrix(Matrix.inverse(matrix), matrix)
+    ).toMatchObject(Matrix.IDENTITY_MATRIX);
+  });
+
   test("Getting a x-axis rotate matrix, when calling get_rotation_matrix with 1 on x-axis", () => {
     let axis = [1, 0, 0];
     let angle = 35;
