@@ -3,7 +3,7 @@ const esmImport = require("esm")(module);
 
 const Matrix = esmImport("../modules/matrix.js");
 
-describe("Initialize Matrix", function () {
+describe("Matrix", function () {
   test("Getting a identity matrix, when calling new", () => {
     expect(Matrix._new()).toMatchObject(Matrix.IDENTITY_MATRIX);
   });
@@ -34,6 +34,40 @@ describe("Initialize Matrix", function () {
       [1, 0, 0, 10],
       [0, 1, 0, 20],
       [0, 0, 1, 30],
+      [0, 0, 0, 1],
+    ]);
+  });
+
+  test("Getting a correct perspective view matrix", () => {
+    var fovy = 50;
+    var width = 4;
+    var height = 4;
+    var ratio = width / height;
+    var near = 1;
+    var far = 20;
+
+    let pers_matrix = Matrix.createPerspective(fovy, ratio, near, far);
+
+    expect(pers_matrix).toMatchObject([
+      [2.1445069205095586, 0, 0, 0],
+      [0, 2.1445069205095586, 0, 0],
+      [0, 0, -1.105263157894737, 0],
+      [0, 0, 1, -2.1052631578947367],
+    ]);
+  });
+
+  test("Getting a correct orthographic view matrix", () => {
+    var width = 4;
+    var height = 4;
+    var near = 1;
+    var far = 20;
+
+    let ortho_matrix = Matrix.createOrthographic(width, height, near, far);
+
+    expect(ortho_matrix).toMatchObject([
+      [0.5, 0, 0, 0],
+      [0, 0.5, 0, 0],
+      [0, 0, -0.10526315789473684, -1.105263157894737],
       [0, 0, 0, 1],
     ]);
   });

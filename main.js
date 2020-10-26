@@ -25,19 +25,14 @@ var near = 0.1;
 var ratio = { w: 16, h: 10 };
 var fovY = 50;
 
-var PerspectiveMatrix = [
-  [Math.atan(((ratio.w / ratio.h) * fovY) / 2), 0, 0, 0],
-  [0, Math.atan(fovY / 2), 0, 0],
-  [0, 0, -(far + near) / (far - near), -((2 * (near * far)) / (far - near))],
-  [0, 0, 1, 0],
-];
+var PerspectiveMatrix = Matrix.createPerspective(
+  fovY,
+  ratio.w / ratio.h,
+  near,
+  far
+);
 
-var OrthographicMatrix = [
-  [1 / ratio.w, 0, 0, 0],
-  [0, 1 / ratio.h, 0, 0],
-  [0, 0, -(2 / (far - near)), -((far + near) / (far - near))],
-  [0, 0, 0, 1],
-];
+var OrthographicMatrix = Matrix.createOrthographic(ratio.w, ratio.h, near, far);
 
 var positions = [];
 

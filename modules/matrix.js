@@ -173,6 +173,43 @@ function transpose(m) {
   return res;
 }
 
+function createOrthographic(w, h, near, far) {
+  var res = _new();
+
+  var right = w / 2;
+  var left = -right;
+  var top = h / 2;
+  var bottom = -top;
+
+  res[0][0] = 2.0 / (right - left);
+  res[1][1] = 2.0 / (top - bottom);
+  res[2][2] = 2.0 / (near - far);
+
+  res[0][3] += (left + right) / (left - right);
+  res[1][3] += (bottom + top) / (bottom - top);
+  res[2][3] += (near + far) / (near - far);
+
+  return res;
+}
+function createPerspective(fovy, ratio, near, far) {
+  let result = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ];
+
+  var e = 1 / Math.tan(to_radians(0.5 * fovy));
+
+  result[0][0] += e / ratio;
+  result[1][1] += e;
+  result[2][2] += (near + far) / (near - far);
+  result[3][2] += 1;
+  result[3][3] += (2 * near * far) / (near - far);
+
+  return result;
+}
+
 // Copied from http://blog.acipo.com/matrix-inversion-in-javascript/
 // Returns the inverse of matrix `M`.
 function inverse(M) {
@@ -292,6 +329,8 @@ export {
   get_determinant_2x2,
   get_determinant_3x3,
   get_determinant_4x4,
+  createOrthographic,
+  createPerspective,
   multiply_point,
   multiply_matrix,
   inverse,
