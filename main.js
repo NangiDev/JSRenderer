@@ -79,7 +79,7 @@ var ViewWorldMatrix;
 var ModelViewProjMatrix;
 var loadFile = function () {
   ViewWorldMatrix = Matrix.multiply_matrix(PerspectiveMatrix, WorldMatrix);
-  // ViewWorldMatrix = Matrix.multiply_matrix(OrthographicMatrix, WorldMatrix);
+  ViewWorldMatrix = Matrix.multiply_matrix(OrthographicMatrix, WorldMatrix);
   ModelViewProjMatrix = Matrix.multiply_matrix(ViewWorldMatrix, ModelMatrix);
   fetch("/assets/suzanne.obj")
     // fetch("/assets/cube.obj")

@@ -1,17 +1,16 @@
 # JSRenderer
-Trying to learn javascript by implementing a .OBJ renderer
 
-##### Vertices displayed as dots in first perspective view
-<kbd>
-  <img src="assets/persp1.png" width="320">
-</kbd>
+## Trying to learn javascript by implementing a .OBJ renderer
 
-##### Vertices displayed as dots in first orthographic view
-<kbd>
-  <img src="assets/ortho1.png" width="320">
-</kbd>
+#### Adding unit tests on the projection matrices makes a difference
 
-##### Vertices displayed as dots in almost a correct way
+| Projection  | Before                                    | After                                     |
+| ----------- | ----------------------------------------- | ----------------------------------------- |
+| Perspective | <img src="assets/persp1.png" width="320"> | <img src="assets/persp2.png" width="320"> |
+| Ortographic | <img src="assets/ortho1.png" width="320"> | <img src="assets/ortho2.png" width="320"> |
+
+##### First render, vertices displayed as dots in a way
+
 <kbd>
   <img src="assets/progress1.png" width="320">
 </kbd>
