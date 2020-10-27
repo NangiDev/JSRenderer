@@ -1,5 +1,4 @@
 import * as Camera from "./camera.js";
-import * as Vert from "./vert.js";
 
 var canvas = document.getElementById("viewport"),
   ctx = canvas.getContext("2d");
@@ -22,14 +21,14 @@ function draw() {
       var vert_k = positions[face.k];
       var vert_l = positions[face.l];
 
-      var ix = vert_i.x / vert_i.w;
-      var iy = vert_i.y / vert_i.w;
-      var jx = vert_j.x / vert_j.w;
-      var jy = vert_j.y / vert_j.w;
-      var kx = vert_k.x / vert_k.w;
-      var ky = vert_k.y / vert_k.w;
-      var lx = vert_l.x / vert_l.w;
-      var ly = vert_l.y / vert_l.w;
+      var ix = vert_i[0] / vert_i[3];
+      var iy = vert_i[1] / vert_i[3];
+      var jx = vert_j[0] / vert_j[3];
+      var jy = vert_j[1] / vert_j[3];
+      var kx = vert_k[0] / vert_k[3];
+      var ky = vert_k[1] / vert_k[3];
+      var lx = vert_l[0] / vert_l[3];
+      var ly = vert_l[1] / vert_l[3];
 
       var new_ix = ix * canvas.width + canvas.width / 2;
       var new_iy = iy * canvas.height + canvas.height / 2;
@@ -51,12 +50,12 @@ function draw() {
       var vert_j = positions[face.j];
       var vert_k = positions[face.k];
 
-      var ix = vert_i.x / vert_i.w;
-      var iy = vert_i.y / vert_i.w;
-      var jx = vert_j.x / vert_j.w;
-      var jy = vert_j.y / vert_j.w;
-      var kx = vert_k.x / vert_k.w;
-      var ky = vert_k.y / vert_k.w;
+      var ix = vert_i[0] / vert_i[3];
+      var iy = vert_i[1] / vert_i[3];
+      var jx = vert_j[0] / vert_j[3];
+      var jy = vert_j[1] / vert_j[3];
+      var kx = vert_k[0] / vert_k[3];
+      var ky = vert_k[1] / vert_k[3];
 
       var new_ix = ix * canvas.width + canvas.width / 2;
       var new_iy = iy * canvas.height + canvas.height / 2;
@@ -76,10 +75,10 @@ function draw() {
 
   for (var i = 0; i < positions.length; i++) {
     var vert = positions[i];
-    var x = vert.x / vert.w;
-    var y = vert.y / vert.w;
-    var z = vert.z / vert.w;
-    var w = vert.w;
+    var x = vert[0] / vert[3];
+    var y = vert[1] / vert[3];
+    var z = vert[2] / vert[3];
+    var w = vert[3];
 
     var new_x = x * canvas.width + canvas.width / 2;
     var new_y = y * canvas.height + canvas.height / 2;
@@ -101,8 +100,7 @@ var positionCanvas = function () {
   }
   canvas.style.left = window.innerWidth / 2 - canvas.width / 2 + "px";
   canvas.style.top = window.innerHeight / 2 - canvas.height / 2 + "px";
-  draw();
 };
-window.addEventListener("resize", positionCanvas, draw);
 
-export { draw, positions, faces, positionCanvas };
+window.addEventListener("resize", positionCanvas, draw);
+export { draw, positionCanvas, positions, faces };

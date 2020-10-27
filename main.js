@@ -1,5 +1,4 @@
 import * as Matrix from "./modules/matrix.js";
-import * as Vert from "./modules/vert.js";
 import * as Face from "./modules/face.js";
 import * as Camera from "./modules/camera.js";
 import * as Canvas from "./modules/canvas.js";
@@ -18,12 +17,9 @@ var ViewWorldMatrix = Matrix.multiply_matrix(
 //   Camera.OrthographicMatrix,
 //   WorldMatrix
 // );
+var ModelViewProjMatrix = Matrix.multiply_matrix(ViewWorldMatrix, ModelMatrix);
 
 var loadFile = function () {
-  var ModelViewProjMatrix = Matrix.multiply_matrix(
-    ViewWorldMatrix,
-    ModelMatrix
-  );
   fetch("/assets/suzanne.obj")
     // fetch("/assets/cube.obj")
     .then((file) => file.text())
@@ -35,13 +31,7 @@ var loadFile = function () {
             var coords = line.split(" ").splice(1, 4);
             coords.push("1.0");
             coords = Matrix.multiply_point(ModelViewProjMatrix, coords);
-            var vert = new Vert.Vert(
-              coords[0],
-              coords[1],
-              coords[2],
-              coords[3]
-            );
-            Canvas.positions.push(vert);
+            Canvas.positions.push([coords[0], coords[1], coords[2], coords[3]]);
             break;
           case "f":
             var data = line.split(" ").splice(1, 4);
