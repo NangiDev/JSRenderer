@@ -2,6 +2,12 @@
 
 ## Trying to learn javascript by implementing a .OBJ renderer
 
+### First try adding faces
+
+<kbd>
+  <img src="assets/faces1.png" width="320">
+</kbd>
+
 #### Adding unit tests on the projection matrices makes a difference
 
 | Projection  | Before                                    | After                                     |
