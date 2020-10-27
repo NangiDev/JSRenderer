@@ -7,17 +7,17 @@ import * as Canvas from "./modules/canvas.js";
 var ModelMatrix = Matrix.IDENTITY_MATRIX;
 
 var WorldMatrix = Matrix.inverse(
-  Matrix.translate(Matrix.rotate(Matrix._new(), [0, 0, 1], 180), [0, 0, -10])
+  Matrix.translate(Matrix.rotate(Matrix._new(), [0, 0, 1], 180), [0, 0, -5])
 );
 
 var ViewWorldMatrix = Matrix.multiply_matrix(
   Camera.PerspectiveMatrix,
   WorldMatrix
 );
-var ViewWorldMatrix = Matrix.multiply_matrix(
-  Camera.OrthographicMatrix,
-  WorldMatrix
-);
+// var ViewWorldMatrix = Matrix.multiply_matrix(
+//   Camera.OrthographicMatrix,
+//   WorldMatrix
+// );
 
 var loadFile = function () {
   var ModelViewProjMatrix = Matrix.multiply_matrix(
