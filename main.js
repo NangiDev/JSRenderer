@@ -1,4 +1,5 @@
 import * as Matrix from "./modules/matrix.js";
+import * as Vector from "./modules/vector.js";
 import * as Camera from "./modules/camera.js";
 import * as Canvas from "./modules/canvas.js";
 
@@ -54,6 +55,7 @@ var loadFile = function () {
               var normals = line.split(" ").splice(1, 4);
               normals.push("1.0");
               normals = Matrix.multiply_point(ModelViewProjMatrix, normals);
+              normals = Vector.normalize(normals);
               Canvas.normals.push([
                 normals[0],
                 normals[1],
@@ -75,11 +77,11 @@ function loop() {
     ModelMatrix = Matrix.rotate(ModelMatrix, [0, 1, 0], 5);
     loadFile();
   }, 50);
-  // clearInterval(i);
+  clearInterval(i);
 }
 
 loadFile().then(() => {
   Canvas.positionCanvas();
-  // Canvas.draw();
+  Canvas.draw();
   loop();
 });
