@@ -4,6 +4,7 @@ var canvas = document.getElementById("viewport"),
   ctx = canvas.getContext("2d");
 
 var positions = [];
+var normals = [];
 var faces = [];
 
 function draw() {
@@ -16,10 +17,10 @@ function draw() {
     ctx.beginPath();
     if (face[3]) {
       // Four verts, rectangle
-      var vert_i = positions[face[0]];
-      var vert_j = positions[face[1]];
-      var vert_k = positions[face[2]];
-      var vert_l = positions[face[3]];
+      var vert_i = positions[face[0][0] - 1];
+      var vert_j = positions[face[1][0] - 1];
+      var vert_k = positions[face[2][0] - 1];
+      var vert_l = positions[face[3][0] - 1];
 
       var ix = vert_i[0] / vert_i[3];
       var iy = vert_i[1] / vert_i[3];
@@ -46,9 +47,9 @@ function draw() {
       ctx.closePath();
     } else {
       // Three verts, triangle
-      var vert_i = positions[face[0]];
-      var vert_j = positions[face[1]];
-      var vert_k = positions[face[2]];
+      var vert_i = positions[face[0][0] - 1];
+      var vert_j = positions[face[1][0] - 1];
+      var vert_k = positions[face[2][0] - 1];
 
       var ix = vert_i[0] / vert_i[3];
       var iy = vert_i[1] / vert_i[3];
@@ -103,4 +104,4 @@ var positionCanvas = function () {
 };
 
 window.addEventListener("resize", positionCanvas, draw);
-export { draw, positionCanvas, positions, faces };
+export { draw, positionCanvas, positions, normals, faces };

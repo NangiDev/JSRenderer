@@ -20,6 +20,7 @@ var loadFile = function () {
     ModelMatrix
   );
   Canvas.positions.length = 0;
+  Canvas.normals.length = 0;
   Canvas.faces.length = 0;
   return (
     fetch("/assets/suzanne.obj")
@@ -42,12 +43,23 @@ var loadFile = function () {
               break;
             case "f":
               var faces = line.split(" ").splice(1, 4);
-              if (faces[0]) faces[0] = faces[0].split("/")[0] - 1;
-              if (faces[1]) faces[1] = faces[1].split("/")[0] - 1;
-              if (faces[2]) faces[2] = faces[2].split("/")[0] - 1;
-              if (faces[3]) faces[3] = faces[3].split("/")[0] - 1;
+              if (faces[0]) faces[0] = faces[0].split("/");
+              if (faces[1]) faces[1] = faces[1].split("/");
+              if (faces[2]) faces[2] = faces[2].split("/");
+              if (faces[3]) faces[3] = faces[3].split("/");
               var face = [faces[0], faces[1], faces[2], faces[3]];
               Canvas.faces.push(face);
+              break;
+            case "vn":
+              var normals = line.split(" ").splice(1, 4);
+              normals.push("1.0");
+              normals = Matrix.multiply_point(ModelViewProjMatrix, normals);
+              Canvas.normals.push([
+                normals[0],
+                normals[1],
+                normals[2],
+                normals[3],
+              ]);
               break;
             default:
               break;
@@ -68,5 +80,6 @@ function loop() {
 
 loadFile().then(() => {
   Canvas.positionCanvas();
+  // Canvas.draw();
   loop();
 });
