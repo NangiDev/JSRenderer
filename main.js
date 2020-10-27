@@ -1,5 +1,4 @@
 import * as Matrix from "./modules/matrix.js";
-import * as Face from "./modules/face.js";
 import * as Camera from "./modules/camera.js";
 import * as Canvas from "./modules/canvas.js";
 
@@ -20,6 +19,8 @@ var loadFile = function () {
     ViewWorldMatrix,
     ModelMatrix
   );
+  Canvas.positions.length = 0;
+  Canvas.faces.length = 0;
   return (
     fetch("/assets/suzanne.obj")
       // fetch("/assets/cube.obj")
@@ -40,8 +41,12 @@ var loadFile = function () {
               ]);
               break;
             case "f":
-              var data = line.split(" ").splice(1, 4);
-              var face = new Face.Face(data[0], data[1], data[2], data[3]);
+              var faces = line.split(" ").splice(1, 4);
+              if (faces[0]) faces[0] = faces[0].split("/")[0] - 1;
+              if (faces[1]) faces[1] = faces[1].split("/")[0] - 1;
+              if (faces[2]) faces[2] = faces[2].split("/")[0] - 1;
+              if (faces[3]) faces[3] = faces[3].split("/")[0] - 1;
+              var face = [faces[0], faces[1], faces[2], faces[3]];
               Canvas.faces.push(face);
               break;
             default:
@@ -56,10 +61,9 @@ function loop() {
   var i = setInterval(() => {
     Canvas.draw();
     ModelMatrix = Matrix.rotate(ModelMatrix, [0, 1, 0], 5);
-    Canvas.positions.length = 0;
-    Canvas.faces.length = 0;
     loadFile();
   }, 50);
+  // clearInterval(i);
 }
 
 loadFile().then(() => {

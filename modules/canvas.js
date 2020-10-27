@@ -14,12 +14,12 @@ function draw() {
   faces.forEach((face) => {
     ctx.fillStyle = "#FF004D";
     ctx.beginPath();
-    if (face.l) {
+    if (face[3]) {
       // Four verts, rectangle
-      var vert_i = positions[face.i];
-      var vert_j = positions[face.j];
-      var vert_k = positions[face.k];
-      var vert_l = positions[face.l];
+      var vert_i = positions[face[0]];
+      var vert_j = positions[face[1]];
+      var vert_k = positions[face[2]];
+      var vert_l = positions[face[3]];
 
       var ix = vert_i[0] / vert_i[3];
       var iy = vert_i[1] / vert_i[3];
@@ -46,9 +46,9 @@ function draw() {
       ctx.closePath();
     } else {
       // Three verts, triangle
-      var vert_i = positions[face.i];
-      var vert_j = positions[face.j];
-      var vert_k = positions[face.k];
+      var vert_i = positions[face[0]];
+      var vert_j = positions[face[1]];
+      var vert_k = positions[face[2]];
 
       var ix = vert_i[0] / vert_i[3];
       var iy = vert_i[1] / vert_i[3];
